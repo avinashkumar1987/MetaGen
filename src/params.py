@@ -10,6 +10,8 @@ def get_args():
     parser.add_argument('--split', type=str, default='train', help='data split')
     parser.add_argument('--gen_lm', action='store_true', help='use lm_gen; specific to the generator of set.')
     parser.add_argument('--nFeats', type=int, default=128, help='feature dimensions')
+    # added by AK
+    parser.add_argument('--enlarge', type=int, default=0, help='Enlargement factor for the Dot model')
     parser.add_argument('--negative-samples', type=int, default=4,
         help='number of negative samples to train the relevance network')
     parser.add_argument('--no_use_tree', action='store_true', help='do not use tree info in input; always false in our experiment')

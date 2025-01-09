@@ -73,27 +73,72 @@ class Tree:
     # fit attempts to make self appear like tree by replacing variables in tree
     # with subtrees.  It returns a substitution dictionary if the replacement is valid
     # and otherwise returns None
-    def fit(self,tree,variables):
-        if tree.value in variables:
-            # return a replacement
-            return {tree.value:self}
-
-        if not self.value==tree.value: return None              #values must be the same
-        #if not len(self.leaves)==len(tree.leaves): return None
+    #def fit(self,tree,variables):
+    #    if tree.value in variables:
+    #        # return a replacement
+    #        return {tree.value:self}
+    #    if not self.value==tree.value: return None              #values must be the same
+    #    #if not len(self.leaves)==len(tree.leaves): return None
 
         # otherwise, compare the leaves
+    #    out = {}
+    #    for i in range(len(self.leaves)):
+    #        next_dict = self.leaves[i].fit(tree.leaves[i],variables)
+    #        if next_dict == None:
+    #            return None
+    #        for var in next_dict:
+    #            if var in out:
+    #                if not out[var]==next_dict[var]:
+    #                    return None
+    #            else:
+    #                out[var]=next_dict[var]
+    #    return out
+
+    #------------------------------------------------------------------------
+    # fit attempts to make self appear like tree by replacing variables in tree
+    # with subtrees. It returns a substitution dictionary if the replacement is valid
+    # and otherwise returns None
+    def fit(self, tree, variables):
+        # Debugging: Check the initial state of the trees
+        print(f"Attempting to fit:\nSelf: {self}\nTree: {tree}\nVariables: {variables}")
+
+        # Handle the case where the tree value is in the list of variables
+        if tree.value in variables:
+            # Return a replacement if the tree value matches a variable
+            print(f"Variable match found: {tree.value} -> {self}")
+            return {tree.value: self}
+
+        # Check if the values of the current nodes match
+        if not self.value == tree.value:
+            print(f"Value mismatch: self.value = {self.value}, tree.value = {tree.value}")
+            return None
+
+        # Check if the number of leaves matches
+        if len(self.leaves) != len(tree.leaves):
+            print(f"Leaf count mismatch: self.leaves = {len(self.leaves)}, tree.leaves = {len(tree.leaves)}")
+            return None
+
+        # Otherwise, compare the leaves recursively
         out = {}
         for i in range(len(self.leaves)):
-            next_dict = self.leaves[i].fit(tree.leaves[i],variables)
-            if next_dict == None:
+            next_dict = self.leaves[i].fit(tree.leaves[i], variables)
+            if next_dict is None:
+                print(f"Substitution failed at leaf index {i}: self.leaf = {self.leaves[i]}, tree.leaf = {tree.leaves[i]}")
                 return None
+            # Merge the current substitution into the main dictionary
             for var in next_dict:
                 if var in out:
-                    if not out[var]==next_dict[var]:
+                    if not out[var] == next_dict[var]:
+                        print(f"Conflicting substitution for variable '{var}': {out[var]} vs {next_dict[var]}")
                         return None
                 else:
-                    out[var]=next_dict[var]
+                    out[var] = next_dict[var]
+
+        # Debugging: Print the final substitution dictionary
+        print(f"Substitution successful: {out}")
         return out
+
+    #------------------------------------------------------------------------
 
     # overloads the in operator
     def __contains__(self, key):

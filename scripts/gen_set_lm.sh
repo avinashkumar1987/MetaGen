@@ -4,10 +4,12 @@
 #
 ###
 
-export PYTHONPATH=`pwd`/holophrasm
+#export PYTHONPATH=`pwd`/holophrasm
+export PYTHONPATH=$(cd .. && pwd)/src:$(cd .. && pwd)/src/holophrasm
+cd ../src
 python train_pred_lm.py -b 100 -l 5e-4 \
     --log ../logs/set_gen_lm_1 \
     --output ../models/set_gen_lm_1 \
     --schedule 30 40 50 --epoch 60 --samples 6000 \
     --graph_opt adam
-
+cd ../scripts

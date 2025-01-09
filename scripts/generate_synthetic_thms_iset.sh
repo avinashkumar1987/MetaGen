@@ -5,8 +5,9 @@
 
 ID=0
 NUM_PROVERS=1
-export PYTHONPATH=`pwd`/holophrasm
-python parallel_sampling_worker.py \
+#export PYTHONPATH=`pwd`/holophrasm
+export PYTHONPATH=$(cd .. && pwd)/src:$(cd .. && pwd)/src/holophrasm
+python ../src/parallel_sampling_worker.py \
     --data_sampling 1.0 \
     --num_provers $NUM_PROVERS \
     --prover_id $ID \
